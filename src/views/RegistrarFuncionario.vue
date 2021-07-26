@@ -193,6 +193,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   
   name: 'RegistrarFuncionario',
@@ -204,7 +205,9 @@ export default {
                     email: "",
                     phone: "",
                     dataPagamento: "",
-                    username: "",
+                    login: "",
+                    password: "",
+                    function: "",
                     cpf: "",},
       isLoading: false,
       items: [
@@ -215,6 +218,27 @@ export default {
         ],
         right: null,
     };
+  },
+  methods: {
+    async register() {
+      await axios.post("http://localhost:8080/employee/insert/", {
+        name: this.newUser.name,
+        cpf: this.newUser.cpf,
+        email: this.newUser.email,
+        phone: this.newUser.phone,
+        payDay: this.newUser.dataPagamento,
+        role: this.newUser.function,
+        username: this.newUser.login,
+        password: this.newUser.password
+      })
+      .then(() => {
+        alert("Employee registered successfully!")
+      })
+      .catch((error) => {
+        console.log(error)
+        alert("An error occurred while trying to register the employee")
+      })
+    }
   }
   }
 </script>

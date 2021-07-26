@@ -84,22 +84,10 @@
             async login() {
                 var id = null
 
-                const options = {
-
-                    url: "http://localhost:3000/login",
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json;charset=UTF-8",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE",
-                        "Access-Control-Allow-Credentials": "true",
-                    },
-                    data: {
-                        username: this.user.login,
-                        password: this.user.password,
-                    },
-                }
-                await axios.post(options)
+                await axios.post("http://localhost:8080/login/", {
+                    username: this.user.login,
+                    password: this.user.password
+                })
                     .then((response) => {
                         console.log(response)
                         id = response.data.id
@@ -108,27 +96,25 @@
                     .catch((error) => {
                         console.log(error)
                         alert("An error occurred while trying to sign up")
-
                     })
             },
             async getUser(id) {
                 console.log(id)
-                await axios.get("http://localhost:3000/employee/" + id)
+                await axios.get("http://localhost:8080/employee/" + id)
                     .then((response) => {
-                        var user = response.data.user
-                        if (user === 'Porteiro') {
-                            let route = { name: "portaria" };
+                        var data = response.data
+                        if (data.user === 'Porteiro') {
+                            let route = { name: "Portaria" };
                             this.$router.push(route);
                         }
-                        else if (user === 'Administrador') {
-                            let route = { name: "registrar_funcionario" };
+                        else if (data.user === 'Administrador') {
+                            let route = { name: "RegistrarFuncionario" };
                             this.$router.push(route);
                         }
                     })
                     .catch((error) => {
                         console.log(error)
                         alert("An error occurred while trying to sign up")
-
                     })
             }
 

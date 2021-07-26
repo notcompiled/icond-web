@@ -78,9 +78,9 @@
                 ></v-text-field>
                 <v-textarea
                   counter
+                  v-model="manutencao.desc"
                   name="descricao"
                   label="Descrição"
-                  :value="manutencao.value"
                   :rules="rules"
                 ></v-textarea>
             <v-card-actions>
@@ -121,6 +121,8 @@
   </div>
 </template>
 <script>
+
+import axios from "axios"
 export default {
   
   name: 'AnunciarManutencao',
@@ -129,7 +131,7 @@ export default {
       user: { name: "Victor Brasil", function: "Administrador" },
       rules: [v => v.length <= 300 || 'Max 300 characters'],
       manutencao: { motivo: "",
-                    value: "",},
+                    desc: "",},
       isLoading: false,
       items: [
           { title: 'Registrar funcionario', icon: 'mdi-plus', link: '/registrar_funcionario'},
@@ -139,8 +141,23 @@ export default {
         ],
         right: null,
     };
+  },
+  methods: {
+    async register() {
+      await axios.post("http://localhost:8080/maintenance/insert/", {
+        motive: this.manutencao.motivo,
+        description: this.manutencao.desc
+      })
+      .then(() => {
+        alert("Maintenance registered successfully!!")
+      })
+      .catch((error) => {
+        console.log(error)
+        alert("An error occurred while trying to register the maintenance")
+      })
+    }
   }
-  }
+}
 </script>
 
 <style scoped>

@@ -145,7 +145,7 @@
                 ></v-text-field>
                 <v-text-field
                   color="primary"
-                  v-model="newUser.function"
+                  v-model="newUser.apt"
                   requierd
                   background-color="transparent"
                   prepend-icon="mdi-home-outline"
@@ -193,8 +193,9 @@
   </div>
 </template>
 <script>
+
+import axios from "axios"
 export default {
-  
   name: 'RegistrarMorador',
   data() {
     return {
@@ -204,7 +205,8 @@ export default {
                     email: "",
                     phone: "",
                     dataPagamento: "",
-                    username: "",
+                    login: "",
+                    password: "",
                     cpf: "",
                     apt:""},
       isLoading: false,
@@ -216,6 +218,27 @@ export default {
         ],
         right: null,
     };
+  },
+  methods: {
+    async register() {
+      await axios.post("http://localhost:8080/resident/insert/", {
+        name: this.newUser.name,
+        cpf: this.newUser.cpf,
+        email: this.newUser.email,
+        phone: this.newUser.phone,
+        payDay: this.newUser.dataPagamento,
+        house: this.newUser.apt,
+        username: this.newUser.login,
+        password: this.newUser.password
+      })
+      .then(() => {
+        alert("Resident registered successfully!")
+      })
+      .catch((error) => {
+        console.log(error)
+        alert("An error occurred while trying to register the resident")
+      })
+    }
   }
   }
 </script>
